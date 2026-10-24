@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MorseNote — Offline Writing Studio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-icon">M.</div>
+                <div>
+                    <h1>MorseNote</h1>
+                    <p>Your offline writing studio</p>
+                </div>
+            </div>
+
+            <div class="top-actions">
+                <span id="saveStatus" class="save-status">
+                    ● Saved locally
+                </span>
+                <button id="newDocumentBtn" class="button secondary">
+                    + New
+                </button>
+                <button id="downloadBothBtn" class="button primary">
+                    Export both ↓
+                </button>
+            </div>
+        </header>
+
+        <main class="workspace">
+
+            <aside class="sidebar">
+                <div class="sidebar-heading">
+                    <h2>My notebook</h2>
+                    <button id="sidebarNewBtn"
+                            class="icon-button"
+                            title="New document">+</button>
+                </div>
+
+                <label class="field-label" for="searchInput">
+                    SEARCH DOCUMENTS
+                </label>
+
+                <input
+                    type="search"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="Find a document..."
+                >
+
+                <div class="category-heading">YOUR LIBRARY</div>
+
+                <button class="category active" data-category="All">
+                    <span>▤</span> All documents
+                    <span id="documentCount" class="count">0</span>
+                </button>
+
+                <button class="category" data-category="Books">
+                    <span>▣</span> Books
+                </button>
+
+                <button class="category" data-category="Homework">
+                    <span>✎</span> Homework
+                </button>
+
+                <button class="category" data-category="Letters">
+                    <span>✉</span> Letters
+                </button>
+
+                <button class="category" data-category="Notes">
+                    <span>▤</span> Notes
+                </button>
+
+                <div class="sidebar-bottom">
+                    <div class="offline-badge">
+                        <span class="offline-dot"></span>
+                        Works offline
+                    </div>
+                    <p>Your documents stay in this browser.</p>
+                </div>
+            </aside>
+
+            <section class="main-panel">
+
+                <div class="document-toolbar">
+                    <div class="document-details">
+                        <input
+                            id="documentTitle"
+                            class="title-input"
+                            type="text"
+                            value="My first document"
+                            aria-label="Document title"
+                            maxlength="150"
+                        >
+
+                        <select id="documentCategory"
+                                class="category-select"
+                                aria-label="Document category">
+                            <option>Books</option>
+                            <option>Homework</option>
+                            <option>Letters</option>
+                            <option>Notes</option>
+                        </select>
+                    </div>
+
+                    <div class="download-actions">
+                        <button id="downloadMorseBtn"
+                                class="button secondary">
+                            ↓ Morse
+                        </button>
+                        <button id="downloadEnglishBtn"
+                                class="button secondary">
+                            ↓ English
+                        </button>
+                    </div>
+                </div>
+
+                <div class="editor-heading">
+                    <div>
+                        <span class="section-number">01</span>
+                        <strong>MORSE INPUT</strong>
+                    </div>
+
+                    <div class="mode-control">
+                        <label for="inputMode">Input mode</label>
+                        <select id="inputMode">
+                            <option value="direct">Direct typing</option>
+                            <option value="keyer">Telegraph key</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="split-editor">
+
+                    <section class="editor-pane morse-pane">
+                        <div class="pane-header">
+                            <div>
+                                <span class="pane-dot"></span>
+                                <span>Source</span>
+                            </div>
+                            <span class="pane-tag">MORSE CODE</span>
+                        </div>
+
+                        <textarea
+                            id="morseInput"
+                            spellcheck="false"
+                            placeholder="Enter Morse code here...
+
+Example:
+.... . .-.. .-.. ---
+.-- --- .-. .-.. -..
+
+Use spaces between letters
+and / between words."
+                            aria-label="Morse code input"
+                        ></textarea>
+
+                        <div class="keyer-help" id="keyerHelp">
+                            <span class="key-hint">Space</span> Dot / Dash
+                            <span class="key-hint">0</span> Next letter
+                            <span class="key-hint">Enter</span> New word
+                        </div>
+                    </section>
+
+                    <div class="split-divider">
+                        <div class="divider-grip">⋮</div>
+                    </div>
+
+                    <section class="editor-pane english-pane">
+                        <div class="pane-header">
+                            <div>
+                                <span class="pane-dot green"></span>
+                                <span>Live preview</span>
+                            </div>
+                            <span class="pane-tag">ENGLISH</span>
+                        </div>
+
+                        <textarea
+                            id="englishOutput"
+                            readonly
+                            placeholder="Your decoded English will appear here..."
+                            aria-label="Decoded English output"
+                        ></textarea>
+
+                        <div class="output-footer">
+                            <span id="characterCount">0 characters</span>
+                            <span>LIVE PREVIEW</span>
+                        </div>
+                    </section>
+
+                </div>
+
+                <footer class="editor-footer">
+                    <span id="wordCount">0 words</span>
+                    <span>Local notebook · No internet required</span>
+                </footer>
+
+            </section>
+        </main>
+
+        <div id="toast" class="toast" role="status"></div>
+
+        <div id="newDocumentModal" class="modal hidden">
+            <form id="newDocumentForm" class="modal-card">
+                <h2>Create a document</h2>
+                <p>Start a new page in your notebook.</p>
+
+                <label for="newTitle">Document title</label>
+                <input
+                    id="newTitle"
+                    type="text"
+                    placeholder="e.g. My first chapter"
+                    maxlength="150"
+                    required
+                >
+
+                <label for="newCategory">Category</label>
+                <select id="newCategory">
+                    <option>Books</option>
+                    <option>Homework</option>
+                    <option>Letters</option>
+                    <option>Notes</option>
+                </select>
+
+                <div class="modal-actions">
+                    <button type="button"
+                            id="cancelNewBtn"
+                            class="button secondary">
+                        Cancel
+                    </button>
+                    <button type="submit" class="button primary">
+                        Create document
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
